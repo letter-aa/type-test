@@ -157,9 +157,12 @@ int main() {
 					if (!cO.empty()) {
 						//cO = cO.substr(0, cO.size() - 1);
 						//cout << "\n" << cO.substr(0, cO.size() - 1
+						/*
 						cO = cO.substr(0, cO.size() - 1);
 						cout << "\r";
 						cout << cO << " " << "\b";
+						*/
+						cout << "\b" << " " << "\b";
 						break;
 						/*
 						cout << "\r";
