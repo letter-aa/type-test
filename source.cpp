@@ -1,5 +1,4 @@
 #include <iostream>
-#include <Windows.h>
 #include <conio.h>
 #define ANY_ARROW 224
 #define LEFT_ARROW 75
