@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include <conio.h>
 #define ANY_ARROW 224
 #define LEFT_ARROW 75
@@ -6,6 +7,12 @@
 #define UP_ARROW 72
 #define DOWN_ARROW 80
 using namespace std;
+void ok(string input) {
+	for (int i = 0; i < 100; i++) {
+		cout << "\033[A";
+	}
+	cout << "\r" << input;
+}
 int main()
 {
 	string input;
@@ -47,12 +54,12 @@ int main()
 			default:
 				if (rowPos == input.size()) {
 					input = input + (char)i;
-					cout << "\r" << input;
+					ok(input);
 					rowPos = rowPos + 1;
 				}
 				else {
 					input = input.substr(0, rowPos) + (char)i + input.substr(rowPos);
-					cout << "\r" << input;
+					ok(input);
 					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
 					}
