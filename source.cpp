@@ -7,24 +7,32 @@
 #define DOWN_ARROW 80
 using namespace std;
 void ok(string input) {
-	for (int i = 0; i < 100; i++) {
-		cout << "\033[A";
-	}
-	cout << "\r" << input;
+	cout << "\033[H" << input;
 }
 int main()
 {
 	string input;
 	int rowPos = 0;
 	int linePos = 0;
-
+	//18?
 	for (int i = 0;;) {
 		i = _getch();
 		if (i == 8) {
 			if (rowPos > 0) {
-				rowPos = rowPos - 1;
-				cout << "\b \b";
-				input.pop_back();
+				if (rowPos == input.size()) {
+					cout << "\b \b";
+					input.pop_back();
+					rowPos = rowPos - 1;
+				}
+				else {
+					input = input.substr(0, rowPos - 1) + input.substr(rowPos);
+					cout << "\033[H \033[2J \r";
+					cout << input;
+					for (int i = 0; i < input.size() - rowPos + 1; i++) {
+						cout << "\b";
+					}
+					rowPos = rowPos - 1;
+				}
 			}
 		}
 		else {
@@ -33,8 +41,8 @@ int main()
 				i = _getch();
 				switch (i) {
 				case LEFT_ARROW:
-					cout << "\b";
 					if (rowPos > 0) {
+						cout << "\b";
 						rowPos = rowPos - 1;
 					}
 					break;
@@ -57,7 +65,7 @@ int main()
 					rowPos = rowPos + 1;
 				}
 				else {
-					input = input.substr(0, rowPos) + (char)i + input.substr(rowPos);
+					input = input.substr(0, rowPos - 1) + (char)i + input.substr(rowPos - 1);
 					ok(input);
 					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
