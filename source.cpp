@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include <conio.h>
 #define ANY_ARROW 224
 #define LEFT_ARROW 75
@@ -14,14 +15,20 @@ int main()
 	string input;
 	int rowPos = 0;
 	int linePos = 0;
-	//18?
+	//13 enter?
 	for (int i = 0;;) {
 		i = _getch();
 		if (i == 8) {
 			if (rowPos > 0) {
+				cout << endl << rowPos << endl;
 				if (rowPos == input.size()) {
-					cout << "\b \b";
+					//cout << "\b \b";
 					input.pop_back();
+					cout << "\033[H \033[2J \r";
+					cout << input;
+					if (input.size() > 0 && input.substr(input.size() - 1) == "\n") {
+						linePos = linePos - 1;
+					}
 					rowPos = rowPos - 1;
 				}
 				else {
@@ -31,8 +38,39 @@ int main()
 					for (int i = 0; i < input.size() - rowPos + 1; i++) {
 						cout << "\b";
 					}
+					if (input.size() > 0 && input.substr(input.size() - 1) == "\n") {
+						linePos = linePos - 1;
+					}
 					rowPos = rowPos - 1;
 				}
+			}
+		}
+		else if (GetKeyState(VK_SHIFT) & 0x8000) {
+			i = _getch();
+			if (i == 13) {
+				if (rowPos > 0) {
+					if (rowPos == input.size()) {
+						cout << endl;
+						input = input + "\n";
+						linePos = linePos + 1;
+						rowPos = rowPos + 1;
+					}
+					else {
+						input = input.substr(0, rowPos - 1) + "\n" + input.substr(rowPos - 1);
+						cout << "\033[H \033[2J \r";
+						cout << input;
+						for (int i = 0; i < input.size() - rowPos + 1; i++) {
+							cout << "\b";
+						}
+						linePos = linePos + 1;
+						rowPos = rowPos + 1;
+					}
+				}
+			}
+		}
+		else if (i == 13) {
+			if (!(GetKeyState(VK_SHIFT) & 0x8000)) {
+				break;
 			}
 		}
 		else {
