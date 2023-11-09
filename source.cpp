@@ -46,7 +46,6 @@ int main()
 			}
 		}
 		else if (GetKeyState(VK_SHIFT) & 0x8000) {
-			i = _getch();
 			if (i == 13) {
 				if (rowPos > 0) {
 					if (rowPos == input.size()) {
@@ -65,6 +64,21 @@ int main()
 						linePos = linePos + 1;
 						rowPos = rowPos + 1;
 					}
+				}
+			}
+			else {
+				if (rowPos == input.size()) {
+					input = input + (char)i;
+					ok(input);
+					rowPos = rowPos + 1;
+				}
+				else {
+					input = input.substr(0, rowPos - 1) + (char)i + input.substr(rowPos - 1);
+					ok(input);
+					for (int i = 0; i < input.size() - rowPos; i++) {
+						cout << "\b";
+					}
+					rowPos = rowPos + 1;
 				}
 			}
 		}
