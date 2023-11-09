@@ -8,7 +8,12 @@
 #define DOWN_ARROW 80
 using namespace std;
 void ok(string input) {
-	cout << "\033[H" << input;
+	COORD c;
+	c.X = 0;
+	c.Y = 0;
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+	cout << input;
 }
 int main()
 {
