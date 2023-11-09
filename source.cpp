@@ -7,17 +7,33 @@
 #define UP_ARROW 72
 #define DOWN_ARROW 80
 using namespace std;
-void ok(string input) {
+int line = 0; //do not change
+int numOfStr(string mainString, string strToCount) {
+	int amount = 0;
+	string tempMain = mainString;
+	while (tempMain.find(strToCount) != string::npos) {
+		//cout << mainString;
+		if (string(1, tempMain[0]) == strToCount) {
+			tempMain = tempMain.substr(1);
+			amount++;
+		}
+		else {
+			tempMain = tempMain.substr(1);
+		}
+	}
+	return amount;
+}
+void ok(string input, int line) {
 	COORD c;
 	c.X = 0;
-	c.Y = 0;
+	c.Y = line;
 
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 	cout << input;
 }
-int main()
-{
+string type_t() {
 	string input;
+	ok(input, line);
 	int rowPos = 0;
 	int linePos = 0;
 	//13 enter?
@@ -74,12 +90,12 @@ int main()
 			else {
 				if (rowPos == input.size()) {
 					input = input + (char)i;
-					ok(input);
+					ok(input, line);
 					rowPos = rowPos + 1;
 				}
 				else {
 					input = input.substr(0, rowPos - 1) + (char)i + input.substr(rowPos - 1);
-					ok(input);
+					ok(input, line);
 					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
 					}
@@ -118,12 +134,12 @@ int main()
 			default:
 				if (rowPos == input.size()) {
 					input = input + (char)i;
-					ok(input);
+					ok(input, line);
 					rowPos = rowPos + 1;
 				}
 				else {
 					input = input.substr(0, rowPos - 1) + (char)i + input.substr(rowPos - 1);
-					ok(input);
+					ok(input, line);
 					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
 					}
@@ -132,4 +148,13 @@ int main()
 			}
 		}
 	}
+	line++;
+	for (int i = 0; i < numOfStr(input, "\n"); i++) {
+		line++;
+	}
+	return input;
+}
+int main()
+{
+	//code here	
 }
