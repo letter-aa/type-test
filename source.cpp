@@ -23,66 +23,79 @@ int numOfStr(string mainString, string strToCount) {
 	}
 	return amount;
 }
-void ok(string input, int line) {
+void ok(string input, string pre, int line) {
 	COORD c;
 	c.X = 0;
 	c.Y = line;
 
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
-	cout << input;
+	cout << pre << input;
 }
-string type_t() {
+string type_t(string pre) {
+	cout << pre;
 	string input;
-	ok(input, line);
+	/*
+	for (int i = 0; i < line; i++) {
+		input.append("\n");
+		cout << "\n";
+	}*/
 	int rowPos = 0;
-	int linePos = 0;
+	//int linePos = 0;
 	//13 enter?
 	for (int i = 0;;) {
 		i = _getch();
 		if (i == 8) {
-			if (rowPos > 0) {
-				cout << endl << rowPos << endl;
+			if (input.size() > 0 && rowPos > 0) {
 				if (rowPos == input.size()) {
 					//cout << "\b \b";
 					input.pop_back();
-					cout << "\033[H \033[2J \r";
-					cout << input;
-					if (input.size() > 0 && input.substr(input.size() - 1) == "\n") {
+					ok(input, pre, line);
+					cout << " \b";
+					/*
+					if (input.substr(input.size() - 1) == "\n") {
 						linePos = linePos - 1;
 					}
+					*/
 					rowPos = rowPos - 1;
 				}
 				else {
 					input = input.substr(0, rowPos - 1) + input.substr(rowPos);
-					cout << "\033[H \033[2J \r";
-					cout << input;
-					for (int i = 0; i < input.size() - rowPos + 1; i++) {
+					ok(input, pre, line);
+					cout << " \b\b";
+					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
 					}
-					if (input.size() > 0 && input.substr(input.size() - 1) == "\n") {
+					/*
+					cout << " \b";*/
+					/*
+					if (input.substr(input.size() - 1) == "\n") {
 						linePos = linePos - 1;
 					}
+					*/
 					rowPos = rowPos - 1;
 				}
 			}
 		}
 		else if (GetKeyState(VK_SHIFT) & 0x8000) {
 			if (i == 13) {
-				if (rowPos > 0) {
+				if (rowPos >= 0) {
 					if (rowPos == input.size()) {
 						cout << endl;
 						input = input + "\n";
-						linePos = linePos + 1;
+						//linePos = linePos + 1;
 						rowPos = rowPos + 1;
 					}
 					else {
-						input = input.substr(0, rowPos - 1) + "\n" + input.substr(rowPos - 1);
-						cout << "\033[H \033[2J \r";
-						cout << input;
-						for (int i = 0; i < input.size() - rowPos + 1; i++) {
+						input = input.substr(0, rowPos - 1) + "\n" + input.substr(rowPos);
+						for (int i = 0; i < input.substr(rowPos - 1).size(); i++) {
+							cout << " ";
+						}
+						cout << "\b\b";
+						ok(input, pre, line);
+						for (int i = 0; i < input.substr(rowPos - 1).size(); i++) {
 							cout << "\b";
 						}
-						linePos = linePos + 1;
+						//linePos = linePos + 1;
 						rowPos = rowPos + 1;
 					}
 				}
@@ -90,12 +103,12 @@ string type_t() {
 			else {
 				if (rowPos == input.size()) {
 					input = input + (char)i;
-					ok(input, line);
+					ok(input, pre, line);
 					rowPos = rowPos + 1;
 				}
 				else {
-					input = input.substr(0, rowPos - 1) + (char)i + input.substr(rowPos - 1);
-					ok(input, line);
+					input = input.substr(0, rowPos) + (char)i + input.substr(rowPos);
+					ok(input, pre, line);
 					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
 					}
@@ -134,12 +147,12 @@ string type_t() {
 			default:
 				if (rowPos == input.size()) {
 					input = input + (char)i;
-					ok(input, line);
+					ok(input, pre, line);
 					rowPos = rowPos + 1;
 				}
 				else {
-					input = input.substr(0, rowPos - 1) + (char)i + input.substr(rowPos - 1);
-					ok(input, line);
+					input = input.substr(0, rowPos) + (char)i + input.substr(rowPos);
+					ok(input, pre, line);
 					for (int i = 0; i < input.size() - rowPos; i++) {
 						cout << "\b";
 					}
