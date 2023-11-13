@@ -134,7 +134,12 @@ string type_t(string pre) {
 					break;
 				case RIGHT_ARROW:
 					if (rowPos < input.length()) {
-						cout << "\033[C"; //idk how tf this works whoever's reading this pls explain!11
+						CONSOLE_SCREEN_BUFFER_INFO csbi;
+						COORD c;
+						GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+						c.Y = csbi.dwCursorPosition.Y;
+						c.X = csbi.dwCursorPosition.X + 1;
+						SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 						rowPos = rowPos + 1;
 					}
 					break;
@@ -169,5 +174,5 @@ string type_t(string pre) {
 }
 int main()
 {
-	//code here	
+	//code here
 }
